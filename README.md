@@ -9,6 +9,8 @@ De-novo Transcriptomics Assembly workflow for four Dictyostelium species (e.g.- 
 ### PASA Assembly
     PASA/scripts/Launch_PASA_pipeline.pl -c alignAssembly.config -C -R -g PN500.fa -t NewAssembly_35631.fasta.clean --TDN tdn.accs --TRANSDECODER --ALT_SPLICE --ALIGNERS blat,gmap
 ### PASA updation with the existing Annotation
+    PASA/scripts/Load_Current_Gene_Annotations.dbi -c alignAssembly.config -g PN500.fa -P P_Pal_2.gff
+    PASA/scripts/Launch_PASA_pipeline.pl -c annotCompare.config  -A -g PN500.fa -t NewAssembly_35631.fasta.clean
 ### Quality Control Measurement
 #### Annotation
 #### Blobplot
