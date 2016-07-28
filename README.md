@@ -4,8 +4,10 @@ De-novo Transcriptomics Assembly workflow for four Dictyostelium species (e.g.- 
 ### Read Normalization
 ### Read Assembly using Trinity
     alignReads.pl --left reads.ALL.left.fq.normalized_K25_C50_pctSD200.fq --right reads.ALL.right.fq.normalized_K25_C50_pctSD200.fq --seqType fq --target NewAssembly_35631.fasta.clean --aligner bowtie --retain_intermediate_files
-### Statistics
+### Assembly Statistics
+    SAM_nameSorted_to_uniq_count_stats.pl bowtie_out/bowtie_out.nameSorted.sam >AlignmentStatistics
 ### PASA Assembly
+    PASA/scripts/Launch_PASA_pipeline.pl -c alignAssembly.config -C -R -g PN500.fa -t NewAssembly_35631.fasta.clean --TDN tdn.accs --TRANSDECODER --ALT_SPLICE --ALIGNERS blat,gmap
 ### PASA updation with the existing Annotation
 ### Quality Control Measurement
 #### Annotation
