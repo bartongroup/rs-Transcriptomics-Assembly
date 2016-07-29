@@ -32,5 +32,45 @@ De-novo Transcriptomics Assembly workflow for four Dictyostelium species (e.g.- 
     transrate --assembly pasa_Pallidum_Gernot.assemblies.fasta --left reads.ALL.left.fq.normalized_K25_C50_pctSD200.fq --right reads.ALL.right.fq.normalized_K25_C50_pctSD200.fq --reference PN500_augustus_prediction_test.aa --outfile Reference_Based
     transrate --assembly PASA2.fasta --left reads.ALL.left.fq.normalized_K25_C50_pctSD200.fq --right reads.ALL.right.fq.normalized_K25_C50_pctSD200.fq --reference PN500_augustus_prediction_test.aa --outfile Reference_Based
 
-#### Plots
+### Plots
+#### Assembly Depth Plots
+    dicty <- read.table(file="NewAssembly_31259_LengthnCount",sep="\t")
+    pal <- read.table(file="Pallidum_Length_Count",sep="\t")
+    fas <- read.table(file="Dfas_Length_Count",sep="\t")
+    lac <- read.table(file="Dlac_Length_Count",sep="\t")
+
+    t_frame <- data.frame(Species="D.discoideum",Count=dicty$V3)
+    p1_frame <- data.frame(Species="P.pallidum",Count=pal$V3)
+    p2_frame <- data.frame(Species="D.fasciculatum",Count=fas$V3)
+    d_frame <- data.frame(Species="D.lacteum",Count=lac$V3)
+    all_frame <- rbind(t_frame,p1_frame,p2_frame,d_frame)
+    
+    library(ggplot2)
+    pdf("All_depth.pdf")
+    ggplot(all_frame, aes(x=Species, y=Count,fill=Species)) +geom_boxplot()+ scale_y_continuous(trans=log10_trans())+theme_bw()+theme(axis.line = element_line(colour = "black"),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank())
+    dev.off()
+
+#### CEGMA Plots
+
+    a <- read.table(file="Cegma-Dicty1.txt",header=TRUE)
+    b <- read.table(file="cegma-Pal.txt",header=TRUE)
+    c <- read.table(file="cegma-Fasc.txt",header=TRUE)
+    d <- read.table(file="cegma-Lactum.txt",header=TRUE)
+    
+    require(ggplot2)
+    theme_set(theme_bw(14))
+    p <- ggplot(data=a,aes(x=Name,y=Score,fill=Type))+geom_bar(stat="identity")+xlab("")+ggtitle("Dictyostelium discoideum")+ylab("Number of CEGs")+theme(text = element_text(size=20))+scale_fill_manual(values = c("skyblue3","skyblue2"))
+    p1 <- ggplot(data=b,aes(x=Name,y=Score,fill=Type))+geom_bar(stat="identity")+xlab("")+ggtitle("Polysphondylium pallidum")+ylab("Number of CEGs")+theme(text = element_text(size=20))+ scale_fill_manual(values = c("burlywood3","burlywood2"))
+    p2 <- ggplot(data=c,aes(x=Name,y=Score,fill=Type))+geom_bar(stat="identity")+xlab("")+ggtitle("Dictyostelium fasciculatum")+ylab("Number of CEGs")+theme(text = element_text(size=20))+ scale_fill_manual(values = c("indianred3","indianred2"))
+    p3 <- ggplot(data=d,aes(x=Name,y=Score,fill=Type))+geom_bar(stat="identity")+xlab("")+ggtitle("Dictyostelium lacteum")+ylab("Number of CEGs")+theme(text = element_text(size=20))+scale_fill_manual(values = c("palegreen3","palegreen2"))
+    
+    source("multiplot.R")
+    pdf("Cegma_staggerd.pdf",width=15,height=15)
+    multiplot(p,p2,p1,p3)
+    dev.off()
+
+#### Transrate
+##### Assembly Score
+
+##### Contig Score
 
