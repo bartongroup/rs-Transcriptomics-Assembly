@@ -29,6 +29,27 @@ De-novo Transcriptomics Assembly workflow for four Dictyostelium species (e.g.- 
     blobology/gc_cov_annotate.pl --blasttaxid trinity.nt.1e-5.megablast --assembly Trinity.fasta --bam bowtie_out.nameSorted.bam --out blobplot.txt --taxdump ./ --taxlist species order phylum superkingdom
     blobology/makeblobplot.R blobplot.txt 0.01 taxlevel_order
     
+    samtools idxstats bowtie_out.coordSorted.bam >Read_Count_PerContig
+    grep 'Dictyosteliida\|Not annotated' blobplot.txt >blobplot_filter.txt
+    less blobplot_filter.txt | grep "Not annotated" | cut -f1 |sort -u >blobplot_filter_Not_Annot
+    un <- read.table(file="blobplot_filter_Not_Annot")
+    gc <- read.table(file="trinity_gc",header=TRUE)
+    cont <- read.table(file="Read_Count_PerContig",header=TRUE)
+    A1 <- gc[which(gc$Name %in% un$V1),]
+    Merge <- cbind(A1,cont[match(A1$Name,cont$Contig_Name),])
+    write.table(Merge,file="blobplot_filter_Not_Annot_GC_count.txt",sep="\t",row.names=FALSE,quote=FALSE)
+    
+    awk '$3 >=55 && $6<=10' blobplot_filter_Not_Annot_GC_count.txt >blobplot_filter_Not_Annot_GC_count_filter.txt
+    cut -f1 blobplot_filter_Not_Annot_GC_count_filter.txt >blobplot_filter_Not_Annot_GC_count_filter
+    cut -f1 blobplot_filter.txt >blobplot_filter
+    full <- read.table(file="blobplot_filter")
+    filter <- read.table(file="blobplot_filter_Not_Annot_GC_count_filter")
+    A1 <- data.frame(full[-which(full$V1 %in% filter$V1),])
+    write.table(A1,file="Trinity_blobplot_filter",row.names=FALSE,col.names=FALSE,quote=FALSE)
+    
+    perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' Trinity_blobplot_filter Trinity.fasta >Trinity_blobplot_filter.fasta
+
+    
 #### CEGMA
 #### Transrate
     transrate --assembly NewAssembly_35631.fasta.clean --left reads.ALL.left.fq.normalized_K25_C50_pctSD200.fq --right reads.ALL.right.fq.normalized_K25_C50_pctSD200.fq --reference PN500_augustus_prediction_test.aa --outfile Reference_Based
