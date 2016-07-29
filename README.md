@@ -97,7 +97,7 @@ De-novo Transcriptomics Assembly workflow for four Dictyostelium species (e.g.- 
     Fp2_frame <- data.frame(name="DFas_PASA2",n=pal$X,N=pal$FPasa2)
     
     all_frame <- rbind(dp1_frame,pp1_frame,Fp1_frame,lp1_frame,dp2_frame,pp2_frame,Fp2_frame,lp2_frame)
-    p1 <- ggplot(all_frame,aes(x=n,y=N,group=name,shape=name))+geom_point(aes(colour=name),size=4)+geom_line(aes(colour=name, group=name))+scale_color_manual(values= c("#FF3333","#0000CC","#00FF00","#FF00CC","#FF3333","#0000CC","#00FF00","#FF00CC"))+scale_shape_manual(values = c(1,1,1,1,16,16,16,16)) +expand_limits(y=0)+ xlab(" ") +ylab("Score")+theme_bw() +theme(axis.line = element_line(colour = "black"),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank(),text = element_text(size=20))+geom_hline(yintercept=c(0.22,0.35),linetype="dotted",color=c("#006633","#66CCFF"))
+    p1 <- ggplot(all_frame,aes(x=n,y=N,group=name,shape=name))+geom_point(aes(colour=name),size=4)+geom_line(aes(colour=name, group=name))+scale_color_manual(values= c("#FF3333", "#0000CC", "#00FF00", "#FF00CC", "#FF3333", "#0000CC", "#00FF00", "#FF00CC")) +scale_shape_manual(values = c(1, 1, 1, 1, 16, 16,16,16)) +expand_limits(y=0)+ xlab(" ") +ylab("Score")+theme_bw() +theme ( axis.line = element_line(colour = "black"),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(), panel.background = element_blank(),text = element_text (size=20)) + geom_hline (yintercept = c(0.22,0.35) ,linetype ="dotted",color=c("#006633","#66CCFF"))
     
     source("../multiplot.R")
     pdf("Assembly_Score.pdf",width=15,height=15)
@@ -105,6 +105,71 @@ De-novo Transcriptomics Assembly workflow for four Dictyostelium species (e.g.- 
     dev.off()
     
 ##### Contig Score
+###### Dictyostelium Discoideum
 
+    trinity <- read.table(file="Ddis/Reference_Based_NewAssembly_31259.fasta_contigs.csv",sep=",",header=TRUE)
+    dCDS <- read.table(file="Ddis/Reference_Based_DictyCDS-2Sep2014.fas_contigs.csv",sep=",",header=TRUE)
+    pasa1 <- read.table(file="Ddis/Reference_Based_pasa_dicty_Alt_Para_Annot.assemblies.fasta_contigs.csv",sep=",",header=TRUE)
+    pasa2 <- read.table(file="Ddis/Reference_Based_PASA_update_transcripts.fasta_contigs.csv",sep=",",header=TRUE)
+
+    d_frame <- data.frame(D_Discoideum="DictyCDS",Score=dCDS$score)
+    t_frame <- data.frame(D_Discoideum="TrinityAssembly",Score=trinity$score)
+    p1_frame <- data.frame(D_Discoideum="PASA1",Score=pasa1$score)
+    p2_frame <- data.frame(D_Discoideum="PASA2",Score=pasa2$score)
+
+    all_frame <- rbind(t_frame,p1_frame,p2_frame,d_frame)
+    library(ggplot2)
+    library(scales)
+    p <- ggplot(all_frame,aes(x=D_Discoideum,y=Score,fill=D_Discoideum))+geom_boxplot()+xlab("")+ggtitle("Dictyostelium discoideum")+ ylab("Score")+theme_bw() +theme(axis.line = element_line(colour = "black"),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank(),text = element_text (size=15) , legend.position ='none')
+
+###### Polysphondylium Pallidum
+
+    trinity <- read.table(file="Ppal/Reference_Based_NewAssembly_35631.fasta.clean_contigs.csv",sep=",",header=TRUE)
+    dCDS <- read.table(file="Ppal/Reference_Based_DNA.fas_contigs.csv",sep=",",header=TRUE)
+    pasa1 <- read.table(file="Ppal/Reference_Based_pasa_Pallidum_Gernot.assemblies.fasta_contigs.csv",sep=",",header=TRUE)
+    pasa2 <- read.table(file="Ppal/Reference_Based_PASA2.fasta_contigs.csv",sep=",",header=TRUE)
     
+    d_frame <- data.frame(P_Pallidum="PpalCDS",Score=dCDS$score)
+    t_frame <- data.frame(P_Pallidum="TrinityAssembly",Score=trinity$score)
+    p1_frame <- data.frame(P_Pallidum="PASA1", Score=pasa1$score)
+    p2_frame <- data.frame(P_Pallidum="PASA2", Score=pasa2$score)
+    
+    all_frame <- rbind(t_frame,p1_frame,p2_frame,d_frame)
+    p1 <- ggplot(all_frame,aes(x=P_Pallidum,y=Score,fill=P_Pallidum))+geom_boxplot()+xlab("")+ggtitle("Polysphondylium pallidum")+ ylab("Score")+theme_bw() +theme(axis.line = element_line(colour = "black"),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank(),text = element_text (size=15), legend.position ='none')
 
+###### Dictyostelium Fasciculatum
+
+    trinity <- read.table(file="Dfas/Reference_Based_Trinity_blobplot_filter.fasta_contigs.csv",sep=",",header=TRUE)
+    dCDS <- read.table(file="Dfas/Reference_Based_DNA.fasta_contigs.csv",sep=",",header=TRUE)
+    pasa1 <- read.table(file="Dfas/Reference_Based_pasa_Dictyostelium_Fasciculatum_Assembly.assemblies.fasta_contigs.csv",sep=",",header=TRUE)
+    pasa2 <- read.table(file="Dfas/Reference_Based_PASA2.fasta_contigs.csv",sep=",",header=TRUE)
+    
+    d_frame <- data.frame(D_Fasciculatum="DFasCDS",Score=dCDS$score)
+    t_frame <- data.frame(D_Fasciculatum="TrinityAssembly",Score=trinity$score)
+    p1_frame <- data.frame(D_Fasciculatum="PASA1",Score=pasa1$score)
+    p2_frame <- data.frame(D_Fasciculatum="PASA2",Score=pasa2$score)
+    
+    all_frame <- rbind(t_frame,p1_frame,p2_frame,d_frame)
+    p2 <- ggplot(all_frame,aes(x=D_Fasciculatum,y=Score,fill=D_Fasciculatum))+geom_boxplot()+xlab("")+ggtitle("Dictyostelium fasciculatum")+ylab("Score")+theme_bw() +theme(axis.line = element_line(colour = "black"),panel.grid.major = element_blank() ,panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank(),text = element_text (size=15),legend.position='none')
+
+###### Dictyostelium Lacteum
+
+    trinity <- read.table(file="Dlac/Reference_Based_Trinity_blobplot_filter.fasta_contigs.csv",sep=",",header=TRUE)
+    dCDS <- read.table(file="Dlac/Reference_Based_DNA.fas_contigs.csv",sep=",",header=TRUE)
+    pasa1 <- read.table(file="Dlac/Reference_Based_pasa_Dictyostelium_Lacteum_Assembly.assemblies.fasta_contigs.csv",sep=",",header=TRUE)
+    pasa2 <- read.table(file="Dlac/Reference_Based_PASA2.fasta_contigs.csv",sep=",",header=TRUE)
+    
+    d_frame <- data.frame(D_Lacteum="DLacCDS",Score=dCDS$score)
+    t_frame <- data.frame(D_Lacteum="TrinityAssembly",Score=trinity$score)
+    p1_frame <- data.frame(D_Lacteum="PASA1",Score=pasa1$score)
+    p2_frame <- data.frame(D_Lacteum="PASA2",Score=pasa2$score)
+    
+    all_frame <- rbind(t_frame,p1_frame,p2_frame,d_frame)
+    p3 <- ggplot(all_frame,aes(x=D_Lacteum,y=Score,fill=D_Lacteum))+geom_boxplot()+xlab("")+ggtitle("Dictyostelium lacteum")+ylab("Score")+theme_bw() +theme(axis.line = element_line(colour = "black"),panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank(),text = element_text (size=15),legend.position='none')
+    
+    source("../multiplot.R")
+    pdf("Contig_Score.pdf",width=15,height=15)
+    multiplot(p,p2,p1,p3)
+    dev.off()
+    
+    
