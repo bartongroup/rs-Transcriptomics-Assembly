@@ -1,4 +1,5 @@
 # Transcriptomics-Assembly
+
 De-novo Transcriptomics Assembly workflow for four Dictyostelium species (e.g.- Dictyostelium discoideum, Polysphondylium pallidum, Dictyostelium Lacteum and Dictyostelium Fasciculatum). This is the standard assembly workflow that should ideally work on any organism.Before normalizing first concatenate all RNAseq data across all samples into a single set of inputs to generate a single reference transcriptomics assembly.  Combine all left reads in one file and all right reads in another file. In order to reduce the number, raw reads were normalized using in silico digital normalization implemented in trinity at 50X coverage. The reads were assembled with Trinity using kmer parameter of 25.
 
 ### Read Normalization
@@ -10,6 +11,10 @@ De-novo Transcriptomics Assembly workflow for four Dictyostelium species (e.g.- 
 ### PASA Assembly
     PASA/scripts/Launch_PASA_pipeline.pl -c alignAssembly.config -C -R -g PN500.fa -t NewAssembly_35631.fasta.clean --TDN tdn.accs --TRANSDECODER --ALT_SPLICE --ALIGNERS blat,gmap
 ### PASA updation with the existing Annotation
+##### In case the existing genome annotation in Augustus file format
+    grep "AUGUSTUS" PN500_augustus_prediction.gff | awk -F "\t" '$3 ~/gene|transcript|exon|CDS/' >P_Pal.gff 
+    python Format_Gff.py >P_Pal_1.gff
+    python Format_Gff2.py >P_Pal_2.gff
     PASA/scripts/Load_Current_Gene_Annotations.dbi -c alignAssembly.config -g PN500.fa -P P_Pal_2.gff
     PASA/scripts/Launch_PASA_pipeline.pl -c annotCompare.config  -A -g PN500.fa -t NewAssembly_35631.fasta.clean
 ### Quality Control Measurement
