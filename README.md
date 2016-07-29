@@ -71,6 +71,40 @@ De-novo Transcriptomics Assembly workflow for four Dictyostelium species (e.g.- 
 
 #### Transrate
 ##### Assembly Score
-
+    pal <- read.table(file="QA_Ref_Coveragre.txt",sep="\t",header=TRUE)
+    dp1_frame <- data.frame(name="Ddis_PASA1",n=pal$X,N=pal$DPasa1)
+    pp1_frame <- data.frame(name="Ppal_PASA1",n=pal$X,N=pal$PPasa1)
+    Fp1_frame <- data.frame(name="DFas_PASA1",n=pal$X,N=pal$FPasa1)
+    lp1_frame <- data.frame(name="DLac_PASA1",n=pal$X,N=pal$LPasa1)
+    dp2_frame <- data.frame(name="Ddis_PASA2",n=pal$X,N=pal$DPasa2)
+    lp2_frame <- data.frame(name="DLac_PASA2",n=pal$X,N=pal$LPasa2)
+    pp2_frame <- data.frame(name="Ppal_PASA2",n=pal$X,N=pal$PPasa2)
+    Fp2_frame <- data.frame(name="DFas_PASA2",n=pal$X,N=pal$FPasa2)
+    
+    all_frame <- rbind(dp1_frame,pp1_frame,Fp1_frame,lp1_frame,dp2_frame,pp2_frame,Fp2_frame,lp2_frame)
+    library(ggplot2)
+    library(scales)
+    p <- ggplot(all_frame,aes(x=n,y=N,group=name,shape=name))+geom_point(aes(colour=name),size=4)+geom_line(aes(colour=name, group=name))+scale_color_manual(values=c("#FF3333","#0000CC","#00FF00","#FF00CC","#FF3333","#0000CC","#00FF00","#FF00CC"))+scale_shape_manual(values = c(1,1,1,1,16,16,16,16))+expand_limits(y=0)+xlab("Reference Coverage") + ylab("Proportion of reference transcripts")+ theme_bw() +theme(axis.line = element_line(colour = "black"),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank(),text = element_text (size=20), legend.position ="top")+geom_hline(yintercept=c(0.22,0.35),linetype="dotted",color=c("#006633","#66CCFF"))
+    
+    pal <- read.table(file="QA_Score.txt",sep="\t",header=TRUE)
+    dp1_frame <- data.frame(name="Ddis_PASA1",n=pal$X,N=pal$DPasa1)
+    pp1_frame <- data.frame(name="Ppal_PASA1",n=pal$X,N=pal$PPasa1)
+    Fp1_frame <- data.frame(name="DFas_PASA1",n=pal$X,N=pal$FPasa1)
+    lp1_frame <- data.frame(name="DLac_PASA1",n=pal$X,N=pal$LPasa1)
+    dp2_frame <- data.frame(name="Ddis_PASA2",n=pal$X,N=pal$DPasa2)
+    lp2_frame <- data.frame(name="DLac_PASA2",n=pal$X,N=pal$LPasa2)
+    pp2_frame <- data.frame(name="Ppal_PASA2",n=pal$X,N=pal$PPasa2)
+    Fp2_frame <- data.frame(name="DFas_PASA2",n=pal$X,N=pal$FPasa2)
+    
+    all_frame <- rbind(dp1_frame,pp1_frame,Fp1_frame,lp1_frame,dp2_frame,pp2_frame,Fp2_frame,lp2_frame)
+    p1 <- ggplot(all_frame,aes(x=n,y=N,group=name,shape=name))+geom_point(aes(colour=name),size=4)+geom_line(aes(colour=name, group=name))+scale_color_manual(values= c("#FF3333","#0000CC","#00FF00","#FF00CC","#FF3333","#0000CC","#00FF00","#FF00CC"))+scale_shape_manual(values = c(1,1,1,1,16,16,16,16)) +expand_limits(y=0)+ xlab(" ") +ylab("Score")+theme_bw() +theme(axis.line = element_line(colour = "black"),panel.grid.major = element_blank(),panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank(),text = element_text(size=20))+geom_hline(yintercept=c(0.22,0.35),linetype="dotted",color=c("#006633","#66CCFF"))
+    
+    source("../multiplot.R")
+    pdf("Assembly_Score.pdf",width=15,height=15)
+    multiplot(p,p1)
+    dev.off()
+    
 ##### Contig Score
+
+    
 
