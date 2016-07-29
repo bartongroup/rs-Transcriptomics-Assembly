@@ -167,6 +167,8 @@ De-novo Transcriptomics Assembly workflow for four Dictyostelium species (e.g.- 
     all_frame <- rbind(t_frame,p1_frame,p2_frame,d_frame)
     p3 <- ggplot(all_frame,aes(x=D_Lacteum,y=Score,fill=D_Lacteum))+geom_boxplot()+xlab("")+ggtitle("Dictyostelium lacteum")+ylab("Score")+theme_bw() +theme(axis.line = element_line(colour = "black"),panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.border = element_blank(),panel.background = element_blank(),text = element_text (size=15),legend.position='none')
     
+###### Combine All plots
+
     source("../multiplot.R")
     pdf("Contig_Score.pdf",width=15,height=15)
     multiplot(p,p2,p1,p3)
