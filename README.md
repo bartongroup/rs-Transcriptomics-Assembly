@@ -14,7 +14,10 @@ De-novo Transcriptomics Assembly workflow for four Dictyostelium species (e.g.- 
     PASA/scripts/Launch_PASA_pipeline.pl -c annotCompare.config  -A -g PN500.fa -t NewAssembly_35631.fasta.clean
 ### Quality Control Measurement
 #### Annotation
-    blat PN500.fa ../NewAssembly_35631.fasta.clean -t=dna -q=dna -out=blast9 Trinity-Genome.blat
+    blat PN500.fa ../NewAssembly_35631.fasta.clean -t=dna -q=dna -out=psl Trinity-Genome.psl
+    perl blat2gbrowse.pl Trinity-Genome.psl Reema1.gff
+    less Reema1.gff | grep "HSP" >NewAssembly.gtf
+    perl GTF1.pl NewAssembly.gtf >NewAssembly_Final.gtf
 #### Blobplot
     
 #### CEGMA
