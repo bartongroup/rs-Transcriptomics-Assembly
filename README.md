@@ -25,6 +25,10 @@ De-novo Transcriptomics Assembly workflow for four Dictyostelium species (e.g.- 
     perl GTF1.pl NewAssembly.gtf >NewAssembly_Final.gtf
 #### Blobplot
     
+    blastn -task megablast -query Trinity.fasta -db nt -evalue 1e-5 -num_threads 6 -max_target_seqs 1 -outfmt '"6 qseqid staxids"' -out trinity.nt.1e-5.megablast
+    blobology/gc_cov_annotate.pl --blasttaxid trinity.nt.1e-5.megablast --assembly Trinity.fasta --bam bowtie_out.nameSorted.bam --out blobplot.txt --taxdump ./ --taxlist species order phylum superkingdom
+    blobology/makeblobplot.R blobplot.txt 0.01 taxlevel_order
+    
 #### CEGMA
 #### Transrate
     transrate --assembly NewAssembly_35631.fasta.clean --left reads.ALL.left.fq.normalized_K25_C50_pctSD200.fq --right reads.ALL.right.fq.normalized_K25_C50_pctSD200.fq --reference PN500_augustus_prediction_test.aa --outfile Reference_Based
