@@ -51,6 +51,18 @@ De-novo Transcriptomics Assembly workflow for four Dictyostelium species (e.g.- 
 
     
 #### CEGMA
+    CEGMA_v2.5/bin/cegma -g Trinity.fasta >trinity.cegma
+    CEGMA_v2.5/bin/cegma -g DF_genome.fa >genome.cegma
+    CEGMA_v2.5/bin/cegma -g pasa_Fasiculatum.assemblies.fasta >pasa1.cegma
+    
+    library(ggplot2)
+    b <- read.table(file="cegma-Fasc.txt",header=TRUE)
+    pdf("Cegma-Fasiculatum_staggerd.pdf")
+    theme_set(theme_bw(14))
+    p <- ggplot(data=b,aes(x=Name,y=Score,fill=Type))+geom_bar(stat="identity")+xlab("D_Fasciculatum")+ylab("Number of CEGs")+theme(text = element_text(size=20))
+    p + scale_fill_manual(values = c("indianred3","indianred2"))
+    dev.off()
+
 #### Transrate
     transrate --assembly NewAssembly_35631.fasta.clean --left reads.ALL.left.fq.normalized_K25_C50_pctSD200.fq --right reads.ALL.right.fq.normalized_K25_C50_pctSD200.fq --reference PN500_augustus_prediction_test.aa --outfile Reference_Based
     transrate --assembly DNA.fas --left reads.ALL.left.fq.normalized_K25_C50_pctSD200.fq --right reads.ALL.right.fq.normalized_K25_C50_pctSD200.fq --reference PN500_augustus_prediction_test.aa --outfile Reference_Based
