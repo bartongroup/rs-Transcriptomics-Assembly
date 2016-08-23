@@ -54,9 +54,11 @@ De-novo Transcriptomics Assembly workflow for four Dictyostelium species (e.g.- 
     CEGMA_v2.5/bin/cegma -g Trinity.fasta >trinity.cegma
     CEGMA_v2.5/bin/cegma -g DF_genome.fa >genome.cegma
     CEGMA_v2.5/bin/cegma -g pasa_Fasiculatum.assemblies.fasta >pasa1.cegma
+    CEGMA_v2.5/bin/cegma -g PASA2.fasta >pasa2.cegma
     
     library(ggplot2)
     b <- read.table(file="cegma-Fasc.txt",header=TRUE)
+    ### cegma-Fasc.txt contains the complete and partial CEG in all four files
     pdf("Cegma-Fasiculatum_staggerd.pdf")
     theme_set(theme_bw(14))
     p <- ggplot(data=b,aes(x=Name,y=Score,fill=Type))+geom_bar(stat="identity")+xlab("D_Fasciculatum")+ylab("Number of CEGs")+theme(text = element_text(size=20))
