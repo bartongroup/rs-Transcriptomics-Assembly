@@ -57,13 +57,25 @@ De-novo Transcriptomics Assembly workflow for four Dictyostelium species (e.g.- 
     CEGMA_v2.5/bin/cegma -g PASA2.fasta >pasa2.cegma
     
     library(ggplot2)
-    b <- read.table(file="cegma-Fasc.txt",header=TRUE)
-    ### cegma-Fasc.txt contains the complete and partial CEG in all four files
-    pdf("Cegma-Fasiculatum_staggerd.pdf")
+    a <- read.table(file="Cegma-Dicty1.txt",header=TRUE)
+    b <- read.table(file="cegma-Pal.txt",header=TRUE)
+    c <- read.table(file="cegma-Fasc.txt",header=TRUE)
+    d <- read.table(file="cegma-Lactum.txt",header=TRUE)
+
+    ### Cegma-Fasc.txt contains the complete and partial CEG in all four files
+    
+    require(ggplot2)
     theme_set(theme_bw(14))
-    p <- ggplot(data=b,aes(x=Name,y=Score,fill=Type))+geom_bar(stat="identity")+xlab("D_Fasciculatum")+ylab("Number of CEGs")+theme(text = element_text(size=20))
-    p + scale_fill_manual(values = c("indianred3","indianred2"))
+    p <- ggplot(data=a,aes(x=Name,y=Score,fill=Type))+geom_bar(stat="identity")+xlab("")+ggtitle("Dictyostelium discoideum") + ylab ("Number of CEGs")+theme(text = element_text(size=20))+scale_fill_manual(values = c("skyblue3","skyblue2"))
+    p1 <- ggplot(data=b,aes(x=Name,y=Score,fill=Type))+geom_bar(stat="identity")+xlab("")+ggtitle("Polysphondylium pallidum") +ylab ("Number of CEGs")+theme(text = element_text(size=20))+ scale_fill_manual(values = c("burlywood3","burlywood2"))
+    p2 <- ggplot(data=c,aes(x=Name,y=Score,fill=Type))+geom_bar(stat="identity")+xlab("")+ggtitle("Dictyostelium fasciculatum") +ylab ("Number of CEGs")+theme(text = element_text(size=20))+ scale_fill_manual(values = c("indianred3","indianred2"))
+    p3 <- ggplot(data=d,aes(x=Name,y=Score,fill=Type))+geom_bar(stat="identity")+xlab("")+ggtitle("Dictyostelium lacteum") +ylab ("Number of CEGs")+theme(text = element_text(size=20))+scale_fill_manual(values = c("palegreen3","palegreen2"))
+
+    source("multiplot.R")
+    pdf("Cegma_staggerd.pdf",width=15,height=15)
+    multiplot(p,p2,p1,p3)
     dev.off()
+
 
 #### Transrate
     transrate --assembly NewAssembly_35631.fasta.clean --left reads.ALL.left.fq.normalized_K25_C50_pctSD200.fq --right reads.ALL.right.fq.normalized_K25_C50_pctSD200.fq --reference PN500_augustus_prediction_test.aa --outfile Reference_Based
