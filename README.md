@@ -13,6 +13,7 @@ De-novo Transcriptomics Assembly workflow for four Dictyostelium species (e.g.- 
     samtools view -h -o bowtie_out.nameSorted.sam bowtie_out.nameSorted.bam
     SAM_nameSorted_to_uniq_count_stats.pl bowtie_out/bowtie_out.nameSorted.sam >AlignmentStatistics
 ### PASA Assembly
+    PASA/misc_utilities/accession_extractor.pl < trinity_out_dir/Trinity.fasta >tdn.accs
     PASA/scripts/Launch_PASA_pipeline.pl -c alignAssembly.config -C -R -g PN500.fa -t NewAssembly_35631.fasta.clean --TDN tdn.accs --TRANSDECODER --ALT_SPLICE --ALIGNERS blat,gmap
 ### PASA updation with the existing Annotation
 ##### In case the existing genome annotation in Augustus file format
